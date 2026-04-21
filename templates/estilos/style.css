@@ -5,14 +5,25 @@ body {
     background: linear-gradient(to bottom, #f1f3f5 50%, #3498db 50%);
 }
 
-.andritz{
-    max-width: 20%; 
+.menu{
+    display: flex;
+}
+.a{
+    max-width: 10%; 
     height: auto;    
+}
+.andri{
+    display: block;  
+    margin-left: auto; 
+    margin-right: 0;
+    width: 22%;
+    height: auto;
 }
 
 .qr{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 12%; /  
+    width: 12%; 
+    margin-top: 5%;
 }
