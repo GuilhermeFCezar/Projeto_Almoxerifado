@@ -9,3 +9,10 @@ body {
     max-width: 20%; 
     height: auto;    
 }
+
+.qr{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 12%; /  
+}
