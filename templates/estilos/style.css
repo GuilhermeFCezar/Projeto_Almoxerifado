@@ -1,6 +1,11 @@
 body {
-   height:100vh;
-    margin: 0;
-    background: linear-gradient(to bottom, #f1f3f5 50%, #3498db 50%);
-    /* É importante mudar a cor do texto para branco para ele não sumir! */
+    
+    background-color: black; /* Ou use o código hexadecimal #000000 */
+    color: white;  
+             /* É importante mudar a cor do texto para branco para ele não sumir! */
+}
+
+.andritz{
+    max-width: 20%; /* A imagem nunca será maior que o container pai /
+    height: auto;    / Mantém a proporção original */
 }
