@@ -1,0 +1,4 @@
+body {
+    background-color: black; /* Ou use o código hexadecimal #000000 */
+    color: white;           /* É importante mudar a cor do texto para branco para ele não sumir! */
+}

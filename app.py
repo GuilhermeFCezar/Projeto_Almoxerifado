@@ -12,3 +12,8 @@ def home():
 # Inicia o servidor em modo de depuração (atualiza sozinho quando você salva o código)
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+def soma(a, b):
+    resultado = a + b
+    return resultado
