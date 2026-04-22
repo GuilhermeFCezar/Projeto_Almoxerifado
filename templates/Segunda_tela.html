@@ -33,14 +33,35 @@
             </ul>
         </details>
         <details class="menu-retratil">
-        <summary>Digitar Código/Quantidade</summary>
-        <div class="caixa-input">
-            <input type="number" step="1" placeholder="Digite um número inteiro..." id="inputNumero">
-            <button type="button" onclick="confirmarValor()">Confirmar</button>
-        </div>
-    </details>
+            <summary>Digitar quantidade</summary>
+            <div class="caixa-input">
+                <input type="number" id="inputNumero" placeholder="Digite um número...">
+                <button type="button" onclick="validarNumero()">Verificar</button>
+                <p id="mensagemAviso" style="margin-top: 10px; font-weight: bold;"></p>
+            </div>
+        </details>
 
     </div>
+
+<<script>
+    function validarNumero() {
+        const input = document.getElementById('inputNumero');
+        const aviso = document.getElementById('mensagemAviso');
+        const valor = parseInt(input.value);
+
+        if (isNaN(valor)) {
+            aviso.innerText = "Por favor, digite um número válido.";
+            aviso.style.color = "orange";
+        } else if (valor >= 0 && valor <= 100) {
+            aviso.innerText = "Quantidade valida.";
+            aviso.style.color = "green";
+            // Aqui você poderia prosseguir com o envio para o Python
+        } else {
+            aviso.innerText = "Quantidade invalida.";
+            aviso.style.color = "red";
+        }
+}
+</script>
 
 </body>
 </html>
