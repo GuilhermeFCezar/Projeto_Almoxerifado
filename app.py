@@ -14,7 +14,15 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 
-def soma(a, b):
-    resultado = a + b
-    return resultado
-
+def verificar():
+    valor = request.form.get('codigo_ferramenta')
+    try:
+        numero = int(valor)
+        if numero >= 0:
+            flash("Sucesso: Número positivo!", "success")
+        else:
+            flash("Aviso: O número digitado é negativo.", "danger")
+    except ValueError:
+        flash("Erro: Digite um número inteiro válido.", "error")
+    
+    return redirect('/')
