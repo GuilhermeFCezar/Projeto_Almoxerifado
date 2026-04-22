@@ -5,6 +5,18 @@ body {
     background: linear-gradient(to bottom, #f1f3f5 50%, #3498db 50%);
 }
 
+h1{
+    font-family: 'montserrat', sans-serif; 
+    font-size: 50px;                 
+    font-weight: bold;               
+}
+h2{
+    font-family: 'Arial', sans-serif; 
+    font-size: 30px;                 
+    font-weight: bold;               
+}
+
+
 .menu{
     display: flex;
 }
@@ -19,7 +31,6 @@ body {
     width: 22%;
     height: auto;
 }
-
 
 .qr{
     display: block;
@@ -52,10 +63,11 @@ body {
 
 .voltar {
     display: block;
-    margin-left: auto;
-    margin-right: 2%;
+    position: absolute;
+    margin-left: 95%;
+    margin-right: 50%;
     width: 3%; 
-    margin-top: -40px; /* Ajuste o valor conforme necessário */
+    margin-top: -9%; /* Ajuste o valor conforme necessário */
 }
 
 /* --- Área Central (Onde está o Menu) --- */
