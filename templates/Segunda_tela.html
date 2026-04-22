@@ -8,13 +8,37 @@
 <body>
 
     <div class="segtela">
-    <h1><center>Almoxerifado de Ferrementas</center></h1>
-    <hr>
+        <img class="andri_2" src="Imagens/Andritz_Logo.svg.png" alt="Logo">  <!--Imagem no nome completo da empresa-->
+        <h1><center>Almoxerifado de Ferrementas</center></h1>
     
+         <a href="interface.html">
+        <img class="voltar" src="Imagens/voltar.png" alt="voltar">
+         </a>
+    </div>
 
-    <a href="interface.html">
-    <img class="voltar" src="Imagens/voltar.png" alt="voltar">
-    </a>
+    <div class="meio">
+        <details class="menu-retratil">
+            <summary>Registro Operador</summary>
+            <ul>
+                <li><a href="/perfil">Felipe</a></li>
+                <li><a href="/configuracoes">Guilherme</a></li>
+            </ul>
+        </details> 
+        <details class="menu-retratil">
+            <summary>Maquinas</summary>
+            <ul>
+                <li><a href="/skoda1">Skoda 45403</a></li>
+                <li><a href="/skoda2">Skoda 45404</a></li>
+                <li><a href="/skoda3">Skoda 45405</a></li>
+            </ul>
+        </details>
+        <details class="menu-retratil">
+        <summary>Digitar Código/Quantidade</summary>
+        <div class="caixa-input">
+            <input type="number" step="1" placeholder="Digite um número inteiro..." id="inputNumero">
+            <button type="button" onclick="confirmarValor()">Confirmar</button>
+        </div>
+    </details>
 
     </div>
 

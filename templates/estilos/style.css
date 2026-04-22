@@ -20,6 +20,7 @@ body {
     height: auto;
 }
 
+
 .qr{
     display: block;
     margin-left: auto;
@@ -28,12 +29,106 @@ body {
     margin-top: 5%;
 }
 /* Segunda tela*/
-.segtela{
-.voltar{
+body {
+    height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+    background: linear-gradient(to bottom, #f1f3f5 50%, #3498db 50%);
+}
+
+/* --- Topo da Página --- */
+.segtela {
+    padding: 20px;
+    position: relative; /* Ajuda a posicionar elementos dentro dela */
+}
+
+.andri_2 {
+    display: block;  
+    margin-left: 0; 
+    margin-right: auto;
+    width: 22%;
+    height: auto;
+}
+
+.voltar {
     display: block;
     margin-left: auto;
     margin-right: 2%;
     width: 3%; 
-    margin-top: -4%;
+    margin-top: -40px; /* Ajuste o valor conforme necessário */
 }
+
+/* --- Área Central (Onde está o Menu) --- */
+.meio {
+    display: flex;
+    justify-content: center; /* Centraliza o menu horizontalmente */
+    margin-top: 50px;       /* Cria espaço entre o título e o menu */
+    gap: 5%;
+}
+
+.menu-retratil {
+    width: 250px;
+}
+
+.menu-retratil summary {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    list-style: none;
+    text-align: center;
+    font-weight: bold;
+}
+
+.menu-retratil ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white; /* Fundo branco para a lista não sumir no azul */
+}
+
+.menu-retratil li a {
+    display: block; 
+    padding: 10px;
+    text-decoration: none;
+    color: #333;
+}
+
+.menu-retratil li a:hover {
+    background-color: #f8f9fa;
+}
+
+.caixa-input {
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaço entre o input e o botão */
+}
+
+.caixa-input input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+.caixa-input button {
+    padding: 8px;
+    background-color: #28a745; /* Verde para confirmar */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.caixa-input button:hover {
+    background-color: #218838;
 }
