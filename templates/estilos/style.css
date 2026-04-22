@@ -5,15 +5,18 @@ body {
     background: linear-gradient(to bottom, #f1f3f5 50%, #3498db 50%);
 }
 
-h1{
-    font-family: 'montserrat', sans-serif; 
-    font-size: 50px;                 
-    font-weight: bold;               
+h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 50px;
+    font-weight: 800; 
+    color: #252525;
 }
-h2{
-    font-family: 'Arial', sans-serif; 
-    font-size: 30px;                 
-    font-weight: bold;               
+
+h2 {
+    font-family: 'Open Sans', sans-serif; 
+    font-size: 35px;
+    font-weight: 400; 
+    color: #555;      
 }
 
 
@@ -67,7 +70,7 @@ body {
     margin-left: 95%;
     margin-right: 50%;
     width: 3%; 
-    margin-top: -9%; /* Ajuste o valor conforme necessário */
+    margin-top: -12%; /* Ajuste o valor conforme necessário */
 }
 
 /* --- Área Central (Onde está o Menu) --- */
