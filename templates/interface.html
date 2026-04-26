@@ -1,52 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <link rel="stylesheet" href="estilos/style.css">
     <meta charset="UTF-8">
-    <title>Almoxerifado</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Almoxarifado de Ferramentas</title>
+    <link rel="stylesheet" href="estilos/style.css">
 </head>
-
 <body>
-    <div class="menu">
-        <img class="a" src="Imagens/logo-A.png" alt="Logo"> <!--Imagem apenas da logo -->
-        <img class="andri" src="Imagens/Andritz_Logo.svg.png" alt="Logo">  <!--Imagem no nome completo da empresa-->
-    </div>
-    
 
-    <div class="titulo">
-    <h1> <center>Almoxerifado de Ferrementas</center></h1>
-    </div>
-    <style>
-        .titulo{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height:30%;
-        }
-    </style>
-
-    <div class="subtitulo">
-    <h2><br><center>Escaneie o QR Code</center></h2>
-    </div>
-    <style>
-        .subtitulo{
-          display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 0%; 
-        }
-    </style>
-
-    <a href="Segunda_tela.html">
-    <img class="qr" src="Imagens/qr_code_PNG34.png" alt="QR-code"> <!--Imagem QRCODE-->
-    </a>
+    <div class="id-card">
         
+        <header class="card-header">
+            <div class="header-left">
+                <div class="logo-icon">A</div>
+                <h1 class="header-title">Almoxarifado de Ferramentas</h1>
+            </div>
+            <div class="header-right">
+                <h2 class="logo-andritz">ANDRITZ</h2>
+            </div>
+        </header>
 
+        <main class="card-body">
+            <div class="watermark-bg">ANDRITZ</div>
 
+            <div class="scan-card">
+                <h3 class="scan-title">Escaneie para Acessar o Inventário</h3>
+                
+                <div class="scan-instruction">
+                    <span class="phone-icon">📱</span> 
+                    <p>Aponte a câmera do seu celular</p>
+                </div>
+
+                <div class="qr-wrapper">
+                    <a href="Segunda_tela.html">
+                        <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=AcessoInventario&color=004b87">
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <footer class="card-footer">
+            <p>Sistema de Gestão de Ferramentas &copy; 2026</p>
+        </footer>
+
+    </div>
 
 </body>
 </html>
