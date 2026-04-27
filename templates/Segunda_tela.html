@@ -8,8 +8,9 @@
 <body>
 
    <header class="navbar">
-        <div class="logo">ANDRITZ </div>
-        <h1 class="nav-title">Almoxarifado de Ferramentas</h1>
+        <div class="logo">ANDRITZ</div>
+        <h1 class="nav-title"> Almoxerifado de Ferramentas</h1>
+      
     </header>
 
     <main class="container">
@@ -49,8 +50,9 @@
                 <span>🔢</span> Digitar quantidade
             </div>
             <div class="card-body">
-                <input type="number" placeholder="Digite um número..." class="input-field">
-                <button class="btn-verificar">Verificar ✓</button>
+                <input type="number" id="inputNumero" placeholder="Digite um número..." class="input-field">
+                <button type="button" class="btn-verificar" onclick="validarNumero()">Verificar ✓</button>
+                <div id="mensagemAviso"></div>
             </div>
         </section>
     </main>
@@ -61,7 +63,7 @@
 
     <div class="voltar">
         <a href="interface.html">
-            <img src="voltar.png" alt="voltar">
+            <img src="../static/Imagens/voltar.png" alt="voltar">
         </a>
     </div>
 

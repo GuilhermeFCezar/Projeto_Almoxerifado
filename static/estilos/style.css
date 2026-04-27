@@ -153,6 +153,14 @@ body {
     font-size: 11px;
     font-weight: 500;
 }
+
+
+
+
+
+
+
+
 /* Segunda tela*/
 body {
     height: 100vh;
@@ -176,12 +184,12 @@ body {
 }
 
 .voltar {
-    display: block;
-    position: absolute;
-    margin-left: 95%;
-    margin-right: 50%;
+    display:flex;
+    position:absolute;
+    margin-left: 50%;
+    margin-right: 0%;
     width: 3%; 
-    margin-top: -12%; /* Ajuste o valor conforme necessário */
+    margin-top: -50%; /* Ajuste o valor conforme necessário */
 }
 
 /* --- Área Central (Onde está o Menu) --- */
@@ -266,11 +274,21 @@ body {
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
 }
-.voltar{
-    position:absolute;
-   top: 20px;
-   right: 20px;
-   margin: 0;
+
+/*CSS do botão de voltar para a primeira tela*/
+.voltar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    margin: 0;
+    z-index: 10; /* Garante que o botão fique acima de outros elementos */
+    display: flex;
+    align-items: center;
+}
+
+.voltar img {
+    width: 50px; /* Ajuste o tamanho da imagem se necessário */
+    height: auto;
 }
 
 body {
@@ -290,6 +308,7 @@ body {
     align-items: center;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
 
 .logo {
     font-weight: 800;
