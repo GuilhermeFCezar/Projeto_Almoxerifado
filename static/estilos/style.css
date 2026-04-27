@@ -41,20 +41,20 @@ body {
 .header-left {
     display: flex;
     align-items: center;
+    width: 1500px;
     gap: 15px;
 }
 
 .logo-icon {
-    background-color: white;
+    background-color: #004b87;
     color: #004b87;
     font-weight: 900;
-    font-size: 24px;
     width: 40px;
     height: 35px;
     display: flex;
     justify-content: center;
     align-items: center;
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%); /* Simula formato de triângulo/A */
+  
 }
 
 .header-title {
@@ -64,9 +64,15 @@ body {
 }
 
 .logo-andritz {
-    font-size: 26px;
+    background-color: #004b87;
+    color: #004b87;
     font-weight: 900;
-    letter-spacing: 1px;
+    width: 47%;
+    height: auto;
+    display: flex;
+    justify-content: right;
+    align-items: right;
+    margin-left: 60%;
 }
 
 /* --- Corpo do Cartão --- */
