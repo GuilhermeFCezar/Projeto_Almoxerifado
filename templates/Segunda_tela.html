@@ -7,41 +7,67 @@
 </head>
 <body>
 
-    <div class="segtela">
-        <img class="andri_2" src="../static/Imagens/imagem_ANDRITZ_Azul.png" alt="Logo">  <!--Imagem no nome completo da empresa-->
-        <h1><center>Almoxerifado de Ferrementas</center></h1>
-    
-         <a href="interface.html">
-        <img class="voltar" src="../static/Imagens/Imagem_A_Azul.png" alt="voltar">      <!--imagem da logo A-->
-         </a>
-    </div>
+   <header class="navbar">
+        <div class="logo">ANDRITZ </div>
+        <h1 class="nav-title">Almoxarifado de Ferramentas</h1>
+    </header>
 
-    <div class="meio">
-        <details class="menu-retratil">
-            <summary>Registro Operador</summary>
-            <ul>
-                <li><a href="/perfil">Felipe</a></li>
-                <li><a href="/configuracoes">Guilherme</a></li>
-            </ul>
-        </details> 
-        <details class="menu-retratil">
-            <summary>Maquinas</summary>
-            <ul>
-                <li><a href="/skoda1">Skoda 45403</a></li>
-                <li><a href="/skoda2">Skoda 45404</a></li>
-                <li><a href="/skoda3">Skoda 45405</a></li>
-            </ul>
-        </details>
-        <details class="menu-retratil">
-            <summary>Digitar quantidade</summary>
-            <div class="caixa-input">
-                <input type="number" id="inputNumero" placeholder="Digite um número...">
-                <button type="button" onclick="validarNumero()">Verificar</button>
-                <p id="mensagemAviso" style="margin-top: 10px; font-weight: bold;"></p>
+    <main class="container">
+        <section class="card">
+            <div class="card-header">
+                <span>👤</span> Registro Operador
             </div>
-        </details>
+            <div class="card-body">
+                <label for="operador">Selecione o Operador:</label>
+                    <select id="operador" name="operador" class="input-field">
+                    <option value="" disabled selected>Escolha um operador:</option>
+                    <option value="felipe">Felipe</option>
+                    <option value="guilherme">Guilherme</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <span>⚙️</span> Máquinas
+            </div>
+            <div class="card-body">
+                <div class="card-body">
+                <label for="operador">Maquinas:</label>
+                    <select id="operador" name="operador" class="input-field">
+                    <option value="" disabled selected>Selecione a maquina:</option>
+                    <option value="Skoda 45403">Skoda 45403</option>
+                    <option value="Skoda 45404">Skoda 45404</option>
+                    <option value="Skoda 45405">Skoda 45405</option>
+                </select>
+            </div>
+            
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <span>🔢</span> Digitar quantidade
+            </div>
+            <div class="card-body">
+                <input type="number" placeholder="Digite um número..." class="input-field">
+                <button class="btn-verificar">Verificar ✓</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        ANDRITZ. All rights reserved | Version 1.00
+    </footer>
+
+    <div class="voltar">
+        <a href="interface.html">
+            <img src="voltar.png" alt="voltar">
+        </a>
+    </div>
 
     </div>
+
+    
 
 <script>
     function validarNumero() {
