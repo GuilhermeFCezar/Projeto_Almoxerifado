@@ -10,13 +10,28 @@ if not os.path.exists('static/qrcodes'):
     os.makedirs('static/qrcodes')
 
 def iniciar_banco():
-    conn = sqlite3.connect('almoxarifado.db')
+    # Conecta no banco correto (com "e")
+    conn = sqlite3.connect('almoxerifado.db')
     cursor = conn.cursor()
+    
+    # Mantém a estrutura padronizada que criamos anteriormente
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS produtos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+        CREATE TABLE IF NOT EXISTS ferramentas (
+            id TEXT PRIMARY KEY,
             nome TEXT NOT NULL,
-            quantidade INTEGER DEFAULT 0
+            quantidade_em_estoque INTEGER NOT NULL
+        )
+    ''')
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS movimentacoes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ferramenta_id TEXT NOT NULL,
+            quem_pegou TEXT NOT NULL,
+            quem_autorizou TEXT NOT NULL,
+            quantidade_retirada INTEGER NOT NULL,
+            data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (ferramenta_id) REFERENCES ferramentas (id)
         )
     ''')
     conn.commit()
@@ -24,10 +39,10 @@ def iniciar_banco():
 
 @app.route("/")
 def home():
-    # Vamos buscar os produtos no banco para mostrar no HTML
-    conn = sqlite3.connect('almoxarifado.db')
+    # Busca as ferramentas no banco para mostrar no HTML
+    conn = sqlite3.connect('almoxerifado.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM produtos")
+    cursor.execute("SELECT * FROM ferramentas")
     lista_produtos = cursor.fetchall()
     conn.close()
     return render_template("interface.html", produtos=lista_produtos)
@@ -38,13 +53,19 @@ def cadastrar():
     qtd = request.form.get('quantidade')
     
     if nome and qtd:
-        conn = sqlite3.connect('almoxarifado.db')
+        conn = sqlite3.connect('almoxerifado.db')
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO produtos (nome, quantidade) VALUES (?, ?)', (nome, qtd))
-        novo_id = cursor.lastrowid
         
-        # Gera o QR Code com o ID do banco
-        img = qrcode.make(f"{novo_id}")
+        # Cria o ID personalizado (ex: FER-005)
+        cursor.execute("SELECT COUNT(id) FROM ferramentas")
+        total = cursor.fetchone()[0] + 1
+        novo_id = f"FER-{total:03d}"
+        
+        # Insere na tabela 'ferramentas'
+        cursor.execute('INSERT INTO ferramentas (id, nome, quantidade_em_estoque) VALUES (?, ?, ?)', (novo_id, nome, qtd))
+        
+        # Gera o QR Code com o ID do banco em formato de texto
+        img = qrcode.make(novo_id)
         img.save(f"static/qrcodes/qr_{novo_id}.png")
         
         conn.commit()
