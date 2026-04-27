@@ -41,12 +41,11 @@ body {
 .header-left {
     display: flex;
     align-items: center;
-    width: 1500px;
+    width: 1800px;
     gap: 15px;
 }
 
 .logo-icon {
-    background-color: #004b87;
     color: #004b87;
     font-weight: 900;
     width: 40px;
@@ -64,7 +63,6 @@ body {
 }
 
 .logo-andritz {
-    background-color: #004b87;
     color: #004b87;
     font-weight: 900;
     width: 47%;
@@ -72,7 +70,7 @@ body {
     display: flex;
     justify-content: right;
     align-items: right;
-    margin-left: 60%;
+    margin-left: 55%;
 }
 
 /* --- Corpo do Cartão --- */
