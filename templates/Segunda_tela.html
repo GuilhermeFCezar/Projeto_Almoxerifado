@@ -20,7 +20,7 @@
             </div>
             <div class="card-body">
                 <h3>{{ ferramenta[1] }}</h3>
-                <p style="color: #666;">ID: {{ ferramenta[0] }}</p>
+                <p style="color: #668;">ID: {{ ferramenta[0] }}</p>
                 
                 <img src="{{ url_for('static', filename='Imagens/' + ferramenta[3]) }}" 
                     alt="{{ ferramenta[1] }}" 
@@ -69,7 +69,7 @@
             </div>
             <div class="card-body">
                 <input type="number" id="inputNumero" placeholder="Digite um número..." class="input-field">
-                <button type="button" class="btn-verificar" onclick="validarNumero()">Verificar ✓</button>
+                <button type="button" class="btn-verificar" onclick="validarNumero()">Confirmar</button>
                 <div id="mensagemAviso"></div>
             </div>
         </section>
@@ -94,19 +94,23 @@
         const input = document.getElementById('inputNumero');
         const aviso = document.getElementById('mensagemAviso');
         const valor = parseInt(input.value);
+        const estoqueDisponivel = {{ ferramenta[2] }};
 
-        if (isNaN(valor)) {
-            aviso.innerText = "Por favor, digite um número válido.";
+        if (isNaN(valor) || valor <= 0) {
+            aviso.innerText = "Por favor, digite uma quantidade válida (maior que zero).";
             aviso.style.color = "orange";
-        } else if (valor >= 0 && valor <= 100) {
-            aviso.innerText = "Quantidade valida.";
-            aviso.style.color = "green";
-            // Aqui você poderia prosseguir com o envio para o Python
-        } else {
-            aviso.innerText = "Quantidade invalida.";
+        } 
+        // 2. Verifica se o usuário pediu mais do que tem no banco de dados
+        else if (valor > estoqueDisponivel) {
+            aviso.innerText = "Quantidade indisponível! O estoque atual é de apenas " + estoqueDisponivel + " unidades.";
             aviso.style.color = "red";
+        } 
+        // 3. Se passou pelas regras acima, a quantidade é válida!
+        else {
+            aviso.innerText = "Quantidade válida! Retirada autorizada.";
+            aviso.style.color = "green";
         }
-}
+    }
 </script>
 
 </body>
