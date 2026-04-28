@@ -14,6 +14,24 @@
     </header>
 
     <main class="container">
+        <section class="card" style="align-items: center;">
+            <div class="card-header">
+                <span>🔧</span> Ferramenta Lida
+            </div>
+            <div class="card-body">
+                <h3>{{ ferramenta[1] }}</h3>
+                <p style="color: #666;">ID: {{ ferramenta[0] }}</p>
+                
+                <img src="{{ url_for('static', filename='Imagens/' + ferramenta[3]) }}" 
+                    alt="{{ ferramenta[1] }}" 
+                    style="width: 150px; height: 150px; object-fit: contain; margin-top: 15px;">
+                    
+                <p style="margin-top: 10px; font-weight: bold; color: #004a99;">
+                    Estoque Atual: {{ ferramenta[2] }}
+                </p>
+            </div>
+        </section>
+
         <section class="card">
             <div class="card-header">
                 <span>👤</span> Registro Operador
@@ -34,8 +52,8 @@
             </div>
             <div class="card-body">
                 <div class="card-body">
-                <label for="operador">Maquinas:</label>
-                    <select id="operador" name="operador" class="input-field">
+                <label for="maquina">Maquinas:</label>
+                    <select id="maquina" name="maquina" class="input-field">
                     <option value="" disabled selected>Selecione a maquina:</option>
                     <option value="Skoda 45403">Skoda 45403</option>
                     <option value="Skoda 45404">Skoda 45404</option>
@@ -62,10 +80,10 @@
     </footer>
 
     <div class="voltar">
-        <a href="interface.html">
-            <img src="../static/Imagens/voltar.png" alt="voltar">
-        </a>
-    </div>
+    <a href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='Imagens/voltar.png') }}" alt="voltar">
+    </a>
+</div>
 
     </div>
 

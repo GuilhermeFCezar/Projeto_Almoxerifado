@@ -73,6 +73,22 @@ def cadastrar():
         
     return redirect(url_for('home'))
 
+@app.route("/ferramenta/<id_ferramenta>")
+def segunda_tela(id_ferramenta):
+    conn = sqlite3.connect('almoxerifado.db')
+    cursor = conn.cursor()
+    
+    # Busca a ferramenta específica pelo ID escaneado
+    cursor.execute("SELECT * FROM ferramentas WHERE id = ?", (id_ferramenta,))
+    ferramenta_escolhida = cursor.fetchone()
+    conn.close()
+    
+    # Se a ferramenta existir, manda os dados para o HTML
+    if ferramenta_escolhida:
+        return render_template("Segunda_tela.html", ferramenta=ferramenta_escolhida)
+    else:
+        return "Ferramenta não encontrada no sistema!", 404
+
 if __name__ == "__main__":
     iniciar_banco()
     app.run(debug=True)

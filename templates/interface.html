@@ -31,11 +31,18 @@
                     <p>Aponte a câmera do seu celular</p>
                 </div>
 
-                <div class="qr-wrapper">
-                    <a href="Segunda_tela.html">
-                        <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=AcessoInventario&color=004b87">
-                    </a>
-                </div>
+                <div class="scan-instruction" style="justify-content: center; margin-bottom: 15px;">
+    <span class="phone-icon">⌨️</span> 
+    <p>Digite o código da ferramenta</p>
+    </div>
+
+    <div class="manual-input" style="display: flex; flex-direction: column; gap: 10px; width: 80%; margin: 0 auto; padding-bottom: 20px;">
+        <input type="text" id="codigoInput" placeholder="Ex: FER-001" style="padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; outline: none; text-align: center; font-size: 16px; text-transform: uppercase;">
+        
+        <button onclick="buscarManualmente()" style="padding: 12px; background-color: #004a99; color: white; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s;">
+            Acessar Ferramenta
+        </button>
+    </div>
             </div>
         </main>
 
@@ -44,6 +51,28 @@
         </footer>
 
     </div>
+
+    <script>
+    function buscarManualmente() {
+        // Pega o valor digitado e remove espaços em branco sobrando
+        let codigo = document.getElementById('codigoInput').value.trim();
+        
+        // Verifica se o usuário não deixou o campo vazio
+        if (codigo !== "") {
+            // Se ele digitou FER-001, a página é redirecionada para /ferramenta/FER-001
+            window.location.href = "/ferramenta/" + codigo;
+        } else {
+            alert("Por favor, digite o código da ferramenta.");
+        }
+    }
+
+    // Bônus: Fazer o 'Enter' do teclado também acionar o botão
+    document.getElementById('codigoInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            buscarManualmente();
+        }
+    });
+</script>
 
 </body>
 </html>
