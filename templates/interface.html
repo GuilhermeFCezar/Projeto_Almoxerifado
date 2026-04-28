@@ -8,6 +8,26 @@
 </head>
 <body>
 
+    <header style="position: relative; width: 100%; height: 60px;">
+        <div class="user-login" onclick="toggleMenu()">
+            <div class="user-icon">
+                <img src="../static/Imagens/user-avatar.png" alt="Usuario">
+            </div>
+            <div class="user-info">
+                <span class="user-name">Felipe Silva</span>
+                <span class="seta">▼</span>
+            </div>
+
+            <div id="menuOpcoes" class="dropdown-content">
+                <a href="#">Alterar Usuário</a>
+                <a href="#">Máquinas</a>
+                <a href="#">Acrescentar Ferramentas</a>
+            </div>
+        </div>
+    </header>
+
+   
+
     <div class="id-card">
         
         <header class="card-header">
@@ -18,6 +38,9 @@
             <div class="header-right">
                 <img class="logo-andritz" src="../static/Imagens/Andritz_Logo.svg.png"> <!-- imagem da logo ANDRITZ-->
             </div>
+            
+            
+
         </header>
 
         <main class="card-body">
@@ -51,6 +74,25 @@
         </footer>
 
     </div>
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById("menuOpcoes");
+        menu.classList.toggle("show");
+    }
+
+    // Fecha o menu se o usuário clicar fora dele
+    window.onclick = function(event) {
+        if (!event.target.closest('.user-login')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+</script>
 
     <script>
     function buscarManualmente() {

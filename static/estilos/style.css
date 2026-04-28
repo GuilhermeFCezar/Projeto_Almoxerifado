@@ -6,6 +6,83 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+
+
+
+
+/*Aqui Inicia a estilização da area de login*/
+/* Posicionamento do container principal */
+/* --- 1. Conserta a Área do Usuário no Topo --- */
+.user-login {
+    position: absolute;
+    top: -190px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    z-index: 1000; /* Garante que fique acima do cartão */
+}
+
+/* --- 2. Força a Foto a Aparecer Pequena --- */
+.user-icon {
+    width: 40px !important;  /* Tamanho fixo e pequeno */
+    height: 40px !important;
+    border-radius: 4px;
+    overflow: hidden; /* Garante que a foto não saia do quadrado */
+    background-color: #333; /* Fundo escuro para destacar o avatar cinza */
+    border: 2px solid #005bb7; /* Borda azul igual à sua referência */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Garante que a imagem dentro do ícone se comporte bem */
+.user-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Faz a foto preencher o quadrado sem distorcer */
+}
+
+/* --- 3. Conserta o Menu Suspenso Gigante --- */
+.dropdown-content {
+    display: none; /* Começa escondido */
+    position: absolute;
+    top: 100%; /* Aparece logo abaixo do nome/ícone */
+    left: 0;
+    width: 200px; /* Define um tamanho fixo e pequeno para o menu */
+    background-color: #ffffff; /* Fundo branco para as opções */
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.3); /* Sombra para dar profundidade */
+    border-radius: 4px;
+    margin-top: 5px; /* Pequeno espaço entre o nome e o menu */
+    z-index: 1001; /* Fica na frente de tudo, inclusive do user-login */
+}
+
+/* Estilo para as opções (os links <a>) dentro do menu */
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    font-family: sans-serif;
+    border-bottom: 1px solid #eee;
+}
+
+/* Efeito ao passar o mouse nas opções */
+.dropdown-content a:hover {
+    background-color: #004a99; /* Azul da empresa */
+    color: white;
+}
+
+/* --- 4. A Classe Mágica do JavaScript --- */
+.show {
+    display: block !important;
+}
+
+
+
+/*Aqui finaliza a estilização da area de login*/
 body {
     background-color: #e5e5e5;
     display: flex;
