@@ -154,31 +154,41 @@ def excluir_ferramenta():
 
 
 
-@app.route("/cadastrar", methods=['POST'])
-def cadastrar():
-    nome = request.form.get('nome_ferramenta')
-    qtd = request.form.get('quantidade')
+@app.route("/adicionar_ferramenta", methods=['POST'])
+def adicionar_ferramenta():
+    dados = request.get_json()
     
-    if nome and qtd:
-        conn = sqlite3.connect('almoxerifado.db')
-        cursor = conn.cursor()
+    id_ferramenta = dados.get('id')
+    nome = dados.get('nome')
+    quantidade = dados.get('quantidade')
+    imagem = dados.get('imagem')
+
+    conn = sqlite3.connect('almoxerifado.db')
+    cursor = conn.cursor()
+
+    try:
+        # Insere a nova linha no banco de dados
+        cursor.execute('''
+            INSERT INTO ferramentas (id, nome, quantidade_em_estoque, imagem)
+            VALUES (?, ?, ?, ?)
+        ''', (id_ferramenta, nome, quantidade, imagem))
         
-        # Cria o ID personalizado (ex: FER-005)
-        cursor.execute("SELECT COUNT(id) FROM ferramentas")
-        total = cursor.fetchone()[0] + 1
-        novo_id = f"FER-{total:03d}"
-        
-        # Insere na tabela 'ferramentas'
-        cursor.execute('INSERT INTO ferramentas (id, nome, quantidade_em_estoque) VALUES (?, ?, ?)', (novo_id, nome, qtd))
-        
-        # Gera o QR Code com o ID do banco em formato de texto
-        img = qrcode.make(novo_id)
-        img.save(f"static/qrcodes/qr_{novo_id}.png")
+        # Gera o QR Code com o ID e salva na sua pasta static
+        img_qr = qrcode.make(id_ferramenta)
+        img_qr.save(f"static/qrcodes/qr_{id_ferramenta}.png")
         
         conn.commit()
+        mensagem = "Sucesso"
+        
+    except sqlite3.IntegrityError:
+        # Se tentar cadastrar um ID que já existe (ex: FER-001 de novo)
+        mensagem = "Esse ID já está cadastrado no sistema!"
+    except Exception as e:
+        mensagem = str(e)
+    finally:
         conn.close()
         
-    return redirect(url_for('home'))
+    return jsonify({"status": mensagem})
 
 @app.route("/ferramenta/<id_ferramenta>")
 def segunda_tela(id_ferramenta):

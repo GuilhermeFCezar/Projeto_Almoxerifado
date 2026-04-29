@@ -174,3 +174,46 @@ body {
 }
 .btn-page:hover { background: #ddd; }
 
+/* --- Estilos do Modal Sobreposto --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Fundo escuro transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Garante que fique na frente de tudo */
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    width: 450px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.close-btn {
+    font-size: 28px;
+    font-weight: bold;
+    color: #888;
+    cursor: pointer;
+}
+.close-btn:hover { color: #d9534f; }
+
+.input-group { margin-bottom: 15px; }
+.input-group label { display: block; font-weight: 500; margin-bottom: 5px; font-size: 14px;}
+.input-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; outline: none; }
+.input-group input:focus { border-color: #004a99; }
+
+.btn-full { width: 100%; padding: 12px; font-size: 16px; margin-top: 10px; }

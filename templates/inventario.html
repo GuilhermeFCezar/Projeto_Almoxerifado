@@ -31,7 +31,7 @@
         </section>
 
         <section class="actions-bar">
-            <button class="btn-action primary">⊕ Nova Ferramenta</button>
+            <button class="btn-action primary" onclick="abrirModal()">⊕ Nova Ferramenta</button>
             <button class="btn-action secondary">⚙ Opções ▾</button>
             <button class="btn-action secondary">🖨 Imprimir ▾</button>
         </section>
@@ -81,7 +81,38 @@
         </section>
 
     </main>
-    
+    <div id="modalNovaFerramenta" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Cadastrar Nova Ferramenta</h2>
+            <span class="close-btn" onclick="fecharModal()">&times;</span>
+        </div>
+        
+        <form id="formNova" onsubmit="salvarNovaFerramenta(event)">
+            <div class="input-group">
+                <label>ID da Ferramenta (Ex: FER-005):</label>
+                <input type="text" id="novoId" required>
+            </div>
+
+            <div class="input-group">
+                <label>Nome da Ferramenta:</label>
+                <input type="text" id="novoNome" required>
+            </div>
+
+            <div class="input-group">
+                <label>Quantidade Inicial:</label>
+                <input type="number" id="novaQtd" required>
+            </div>
+
+            <div class="input-group">
+                <label>Nome da Imagem (Ex: alicate.png):</label>
+                <input type="text" id="novaImg" placeholder="Salve a foto na pasta Imagens" required>
+            </div>
+
+            <button type="submit" class="btn-blue btn-full">💾 Salvar Ferramenta</button>
+        </form>
+    </div>
+</div>
     <script>
 function filtrarBackend() {
     let input = document.getElementById("inputPesquisa").value;
@@ -215,6 +246,42 @@ function excluirFerramenta(botao) {
             console.error(erro);
         });
     }
+}
+
+// Funções para abrir e fechar a tela
+function abrirModal() { document.getElementById('modalNovaFerramenta').style.display = 'flex'; }
+function fecharModal() { document.getElementById('modalNovaFerramenta').style.display = 'none'; }
+
+// Função para enviar os dados
+function salvarNovaFerramenta(event) {
+    event.preventDefault(); // Impede a página de recarregar piscando a tela
+
+    // Monta o pacote de dados
+    let dados = {
+        id: document.getElementById('novoId').value,
+        nome: document.getElementById('novoNome').value,
+        quantidade: document.getElementById('novaQtd').value,
+        imagem: document.getElementById('novaImg').value
+    };
+
+    // Manda para o Python
+    fetch('/adicionar_ferramenta', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados)
+    })
+    .then(response => response.json())
+    .then(resultado => {
+        if (resultado.status === "Sucesso") {
+            alert("Ferramenta cadastrada e QR Code gerado!");
+            fecharModal();
+            // Recarrega a página de forma limpa para a nova ferramenta aparecer na tabela
+            window.location.reload(); 
+        } else {
+            alert("Erro: " + resultado.status);
+        }
+    })
+    .catch(erro => console.error("Falha na requisição:", erro));
 }
 </script>
 
