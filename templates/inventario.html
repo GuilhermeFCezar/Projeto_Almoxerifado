@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Inventário</title>
+    <link rel="stylesheet" href="../static/estilos/inventario.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">ANDRITZ</div>
+        <h1 class="nav-title">Gestão de Inventário</h1>
+        <div class="user-info">Administrador</div>
+    </header>
+
+    <main class="admin-container">
+        
+        <section class="filters-bar">
+            <div class="filter-group">
+                <label>Exibir de:</label>
+                <input type="text" placeholder="ID (ex: FER-001)">
+                <label>até:</label>
+                <input type="text" placeholder="ID (ex: FER-100)">
+            </div>
+            
+            <div class="search-group">
+                <input type="text" id="inputPesquisa" onkeyup="filtrarBackend()" placeholder="🔍 Pesquisar por ID ou Nome...">
+                <button class="btn-blue">Ir</button>
+            </div>
+        </section>
+
+        <section class="actions-bar">
+            <button class="btn-action primary">⊕ Nova Ferramenta</button>
+            <button class="btn-action secondary">⚙ Opções ▾</button>
+            <button class="btn-action secondary">🖨 Imprimir ▾</button>
+        </section>
+
+        <section class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID (QR Code)</th>
+                        <th>Nome da Ferramenta</th>
+                        <th>Imagem Ref.</th>
+                        <th>Estoque Atual</th>
+                        <th class="col-acoes">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in ferramentas %}
+                    <tr>
+                        <td>{{ item[0] }}</td> <td>{{ item[1] }}</td> <td>
+                            <img src="{{ url_for('static', filename='Imagens/' + item[3]) }}" width="50">
+                        </td>
+                        <td class="estoque-val">{{ item[2] }} un</td> <td class="col-acoes">
+                            <button class="btn-icon edit" onclick="habilitarEdicao(this)" title="Editar">✏️</button>
+                            <button class="btn-icon delete" onclick="excluirFerramenta(this)" title="Excluir">🗑️</button>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5">Nenhuma ferramenta encontrada no inventário.</td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+            </table>
+        </section>
+
+        <section class="pagination-bar">
+            <div class="total-items">
+                Total de Ferramentas Cadastradas: <strong>{{total}}</strong>
+            </div>
+            <div class="page-controls">
+                <button class="btn-page">«</button>
+                <button class="btn-page">‹</button>
+                <span>Página <input type="number" value="1" class="page-input"> de 1</span>
+                <button class="btn-page">›</button>
+                <button class="btn-page">»</button>
+            </div>
+        </section>
+
+    </main>
+    
+    <script>
+function filtrarBackend() {
+    let input = document.getElementById("inputPesquisa").value;
+    
+    // Faz a chamada silenciosa para a rota que criamos no Python
+    fetch(`/buscar_ferramentas?q=${input}`)
+        .then(response => response.json()) // Converte a resposta do Python de volta para dados
+        .then(dados => {
+            // Pega o corpo da tabela e limpa tudo que tem lá
+            let tbody = document.querySelector(".data-table tbody");
+            tbody.innerHTML = ""; 
+
+            // Se o Python não achou nada, mostra a mensagem
+            if (dados.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center;">Nenhuma ferramenta encontrada com "${input}".</td></tr>`;
+                return;
+            }
+
+            // Se achou, recria as linhas da tabela uma por uma
+            dados.forEach(ferramenta => {
+                let tr = document.createElement("tr");
+                
+                // O HTML da linha montado com as variáveis que vieram do jsonify do Python
+                tr.innerHTML = `
+                    <td>${ferramenta.id}</td>
+                    <td>${ferramenta.nome}</td>
+                    <td><img src="/static/Imagens/${ferramenta.imagem}" width="50" style="object-fit: contain;"></td>
+                    <td class="estoque-val">${ferramenta.quantidade} un</td>
+                    <td class="col-acoes">
+                        <button class="btn-icon edit" title="Editar">✏️</button>
+                        <button class="btn-icon delete" title="Excluir">🗑️</button>
+                    </td>
+                `;
+                
+                tbody.appendChild(tr); // Adiciona a linha na tabela
+            });
+        });
+}
+
+function habilitarEdicao(botao) {
+    // 1. Localiza a linha (tr)
+    let linha = botao.closest("tr");
+    let colunas = linha.getElementsByTagName("td");
+
+    // 2. Coleta os valores (O replace tira o " un" para o número não dar erro)
+    let nomeAtual = colunas[1].innerText;
+    let qtdAtual = colunas[3].innerText.replace(' un', '').trim(); 
+    
+    // Pega a imagem (se a tag img existir)
+    let imgTag = colunas[2].querySelector("img");
+    let imgAtual = imgTag ? imgTag.src.split('/').pop() : "";
+
+    // 3. Transforma em Inputs
+    colunas[1].innerHTML = `<input type="text" value="${nomeAtual}" style="width: 100%; padding: 5px;">`;
+    colunas[3].innerHTML = `<input type="number" value="${qtdAtual}" style="width: 70px; padding: 5px;">`;
+    colunas[2].innerHTML = `<input type="text" value="${imgAtual}" style="width: 100%; padding: 5px;">`;
+
+    // 4. O Pulo do Gato: Troca o ícone e altera o atributo onclick forçadamente
+    botao.innerHTML = "✅";
+    botao.setAttribute("onclick", "salvarEdicao(this)");
+}
+
+function salvarEdicao(botao) {
+    let linha = botao.closest("tr");
+    let colunas = linha.getElementsByTagName("td");
+
+    // Coleta os novos valores dos inputs
+    let dadosParaEnviar = {
+        id: colunas[0].innerText,
+        nome: colunas[1].querySelector("input").value,
+        quantidade: colunas[3].querySelector("input").value,
+        imagem: colunas[2].querySelector("input").value
+    };
+
+    // Envia para o Back-end
+    fetch('/editar_ferramenta', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dadosParaEnviar)
+    })
+    .then(response => response.json())
+    .then(resultado => {
+        if (resultado.status === "Sucesso") {
+            // Se salvou, volta as colunas para texto normal
+            colunas[1].innerText = dadosParaEnviar.nome;
+            colunas[3].innerText = dadosParaEnviar.quantidade + " un";
+            colunas[2].innerHTML = `<img src="/static/Imagens/${dadosParaEnviar.imagem}" width="50" style="object-fit: contain;">`;
+            
+            // Volta o botão para o lápis e restaura a função original
+            botao.innerHTML = "✏️";
+            botao.setAttribute("onclick", "habilitarEdicao(this)");
+            
+            // Um pequeno aviso só para confirmar que deu tudo certo
+            alert("Ferramenta atualizada com sucesso!");
+        } else {
+            alert("Erro ao salvar no banco: " + resultado.status);
+        }
+    })
+    .catch(erro => {
+        alert("Erro de comunicação com o Python.");
+        console.error(erro);
+    });
+}
+
+function excluirFerramenta(botao) {
+    // Acha a linha e o ID da ferramenta
+    let linha = botao.closest("tr");
+    let idFerramenta = linha.getElementsByTagName("td")[0].innerText;
+
+    // Pede confirmação antes de apagar do banco
+    if (confirm("ATENÇÃO: Tem certeza que deseja excluir a ferramenta " + idFerramenta + "?")) {
+        
+        // Se o usuário clicou em "OK", manda o comando para o Python
+        fetch('/excluir_ferramenta', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: idFerramenta })
+        })
+        .then(response => response.json())
+        .then(resultado => {
+            if (resultado.status === "Sucesso") {
+                // Se o Python apagou do banco, a gente apaga a linha da tela na hora!
+                linha.remove(); 
+                alert("Ferramenta excluída com sucesso!");
+            } else {
+                alert("Erro ao excluir: " + resultado.status);
+            }
+        })
+        .catch(erro => {
+            alert("Erro de comunicação com o servidor.");
+            console.error(erro);
+        });
+    }
+}
+</script>
+
+
+</body>
+</html>

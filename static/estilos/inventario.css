@@ -1,0 +1,176 @@
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f7f9; /* Fundo cinza bem claro, padrão de dashboards */
+    color: #333;
+}
+
+/* Cabeçalho */
+.navbar {
+    background-color: #004a99;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo { font-weight: 900; font-size: 20px; letter-spacing: 1px; }
+.nav-title { font-size: 18px; font-weight: 500; }
+.user-info { font-size: 14px; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 20px; }
+
+/* Container Principal */
+.admin-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    padding: 20px;
+}
+
+/* 1. Barra de Filtros */
+.filters-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px dotted #eee;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.filter-group, .search-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filters-bar input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+.btn-blue {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 9px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 2. Barra de Botões de Ação */
+.actions-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.btn-action {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.btn-action.primary { background-color: #007bff; color: white; }
+.btn-action.secondary { background-color: #17a2b8; color: white; }
+.btn-action:hover { filter: brightness(0.9); }
+
+/* 3. Tabela de Dados */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.data-table th, .data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.data-table th {
+    background-color: #007bff; /* Azul combinando com a imagem original */
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Efeito Zebrado na tabela (igual a imagem) */
+.data-table tbody tr:nth-child(even) { background-color: #f9f9f9; }
+.data-table tbody tr:hover { background-color: #f1f7fd; }
+
+.estoque-val {
+    font-weight: bold;
+    color: #d9534f; /* Vermelho para destacar números, comum em ERPs */
+}
+
+/* Ícones de Ação na Tabela */
+.col-acoes {
+    text-align: right;
+    width: 100px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+    opacity: 0.7;
+    transition: 0.2s;
+}
+
+.btn-icon:hover { opacity: 1; transform: scale(1.2); }
+
+/* 4. Paginação */
+.pagination-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #eef2f5;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.page-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.page-input {
+    width: 40px;
+    text-align: center;
+    padding: 3px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.btn-page {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 3px 8px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+.btn-page:hover { background: #ddd; }
+
