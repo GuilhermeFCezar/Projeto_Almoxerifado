@@ -1,11 +1,14 @@
+from flask import Flask, render_template, request, jsonify
 import sqlite3
 
-def criar_banco():
-    # Cria a conexão (se o arquivo não existir, ele será criado)
+app = Flask(__name__)
+
+# --- CONFIGURAÇÃO DO BANCO DE DADOS ---
+def inicializar_banco():
     conn = sqlite3.connect('almoxerifado.db')
     cursor = conn.cursor()
-
-    # Cria a tabela de usuários
+    
+    # Criando a tabela de usuários (Corrigido o NOT EXISTS)
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -13,15 +16,40 @@ def criar_banco():
             senha TEXT NOT NULL
         )
     ''')
-
-    # Insere o usuário Felipe para teste (se ele não existir)
+    
+    # Inserindo usuário padrão para teste
     cursor.execute("INSERT OR IGNORE INTO usuarios (nome, senha) VALUES (?, ?)", ("Felipe", "1234"))
     
     conn.commit()
     conn.close()
 
-# Chame esta função uma vez para preparar tudo
-criar_banco()
+# Rodar a inicialização uma única vez
+inicializar_banco()
+
+# --- ROTAS ---
+
+@app.route('/')
+def index():
+    return render_template('interface.html')
+
+@app.route('/cadastrar', methods=['POST'])
+def cadastrar():
+    dados = request.json
+    novo_usuario = dados.get('usuario')
+    nova_senha = dados.get('senha')
+
+    if not novo_usuario or not nova_senha:
+        return jsonify({"sucesso": False, "mensagem": "Preencha todos os campos!"}), 400
+
+    try:
+        conn = sqlite3.connect('almoxerifado.db')
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO usuarios (nome, senha) VALUES (?, ?)", (novo_usuario, nova_senha))
+        conn.commit()
+        conn.close()
+        return jsonify({"sucesso": True, "mensagem": "Usuário cadastrado com sucesso!"}), 201
+    except sqlite3.IntegrityError:
+        return jsonify({"sucesso": False, "mensagem": "Este usuário já existe!"}), 400
 
 @app.route('/autenticar', methods=['POST'])
 def autenticar():
@@ -29,23 +57,16 @@ def autenticar():
     usuario_form = dados.get('usuario')
     senha_form = dados.get('senha')
 
-    # 1. Conecta ao banco de dados
     conn = sqlite3.connect('almoxerifado.db')
     cursor = conn.cursor()
-
-    # 2. Busca o usuário pelo nome
     cursor.execute("SELECT nome, senha FROM usuarios WHERE nome = ?", (usuario_form,))
-    resultado = cursor.fetchone() # Retorna (nome, senha) ou None
+    resultado = cursor.fetchone()
     conn.close()
 
-    # 3. Verifica se encontrou e se a senha bate
     if resultado and resultado[1] == senha_form:
-        return jsonify({
-            "sucesso": True, 
-            "nome": resultado[0]
-        }), 200
+        return jsonify({"sucesso": True, "nome": resultado[0]}), 200
     else:
-        return jsonify({
-            "sucesso": False, 
-            "mensagem": "Usuário ou senha incorretos"
-        }), 401
+        return jsonify({"sucesso": False, "mensagem": "Usuário ou senha incorretos"}), 401
+
+if __name__ == '__main__':
+    app.run(debug=True)

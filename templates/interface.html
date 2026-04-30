@@ -74,9 +74,7 @@
         </footer>
         
         
-        <!-- Modal de Sobreposição -->
-    <!-- Botão para abrir -->
-    <button onclick="abrirModal()" class="btn-alterar">Alterar Usuário</button>
+    
 
     <!-- Estrutura do Modal -->
    <!-- Este ID deve ser o mesmo que você usa no JavaScript -->
@@ -151,31 +149,39 @@
             modalUser.style.display = 'none';
         }
     });
-    const btnCadastrar = document.getElementById('btn-cadastrar');
+ // Seleciona o botão de cadastro pelo ID
+const botaoCadastrar = document.getElementById('btn-cadastrar');
 
-btnCadastrar.addEventListener('click', async () => {
-    const usuario = document.getElementById('user-input').value;
-    const senha = document.getElementById('pass-input').value;
+if (botaoCadastrar) {
+    botaoCadastrar.addEventListener('click', async () => {
+        const usuario = document.getElementById('user-input').value;
+        const senha = document.getElementById('pass-input').value;
 
-    if (usuario === "" || senha === "") {
-        alert("Digite um usuário e senha para cadastrar!");
-        return;
-    }
+        // Validação simples
+        if (!usuario || !senha) {
+            alert("Por favor, preencha usuário e senha para cadastrar.");
+            return;
+        }
 
-    const response = await fetch('/cadastrar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ usuario: usuario, senha: senha })
+        // Faz a chamada para a rota de cadastro no login.py
+        const response = await fetch('/cadastrar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ usuario: usuario, senha: senha })
+        });
+
+        const resultado = await response.json();
+
+        if (response.ok) {
+            alert(resultado.mensagem); // "Usuário cadastrado com sucesso!"
+            // Limpa os campos após o sucesso
+            document.getElementById('user-input').value = '';
+            document.getElementById('pass-input').value = '';
+        } else {
+            alert("Erro ao cadastrar: " + resultado.mensagem);
+        }
     });
-
-    const resultado = await response.json();
-
-    if (response.ok) {
-        alert(resultado.mensagem);
-    } else {
-        alert("Erro: " + resultado.mensagem);
-    }
-});
+}
 
 
 </script>
