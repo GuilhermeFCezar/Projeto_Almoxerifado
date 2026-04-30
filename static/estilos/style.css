@@ -491,3 +491,86 @@ body {
     background: white;
 }
 
+
+
+
+/*Estilo para a area de login*/
+/* Este CSS deve ser aplicado ao contêiner que envolve o formulário "Acessar Nova Conta" */
+
+.container-login-novo { /* Mude o nome da sua classe para algo assim */
+    /* --- SEGREDO 1: POSICIONAMENTO --- */
+    display: none; /* Começa escondido, o JS vai mudar para 'flex' */
+    position: fixed; /* Fica fixo na tela, não rola com a página */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999; /* Garante que fique por cima de TUDO */
+    
+    /* --- SEGREDO 2: FUNDO ESCURECIDO --- */
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo preto semi-transparente */
+    backdrop-filter: blur(5px); /* Efeito suave de desfoque no fundo */
+    
+    /* --- SEGREDO 3: CENTRALIZAÇÃO PERFEITA --- */
+    justify-content: center;
+    align-items: center;
+}
+
+/* O "cartão" branco que contém o formulário */
+.login-card-content {
+    background-color: #f0f8ff; /* A cor de fundo azul clara que você já usa */
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 380px; /* Largura máxima para não ficar gigante em telas grandes */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3); /* Sombra para dar profundidade */
+    border: 1px solid #ddd;
+    animation: slideUp 0.3s ease; /* Uma animaçãozinha suave de entrada */
+}
+
+/* Estilização para alinhar o conteúdo interno (Título, Inputs, Botões) */
+.login-card-content h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-card-content form div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.login-card-content label {
+    width: 70px; /* Largura fixa para alinhar os labels */
+    font-weight: bold;
+}
+
+.login-card-content input {
+    flex: 1; /* Preenche o resto do espaço */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* Centralizando os botões */
+.btn-group-login {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-group-login button {
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #999;
+}
+
+/* Animação simples de entrada */
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+

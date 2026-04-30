@@ -19,7 +19,7 @@
             </div>
 
             <div id="menuOpcoes" class="dropdown-content">
-                <a href="#">Alterar Usuário</a>
+                <a href="#" id="open-modal">Alterar Usuário</a>
                 <a href="#">Máquinas</a>
                 <a href="{{ url_for('inventario') }}">Acrescentar Ferramentas</a>
             </div>
@@ -72,8 +72,42 @@
         <footer class="card-footer">
             <p>Sistema de Gestão de Ferramentas &copy; 2026</p>
         </footer>
+        
+        
+        <!-- Modal de Sobreposição -->
+    <!-- Botão para abrir -->
+    <button onclick="abrirModal()" class="btn-alterar">Alterar Usuário</button>
 
+    <!-- Estrutura do Modal -->
+   <!-- Este ID deve ser o mesmo que você usa no JavaScript -->
+<div id="modal-usuario" class="container-login-novo">
+    
+    <!-- Este é o card branco que vai flutuar -->
+    <div class="login-card-content">
+        <h3>Acessar Nova Conta</h3>
+        <p>Insira as credenciais para trocar de usuário.</p>
+        
+        <form>
+            <div class="input-group">
+                <label>Usuário</label>
+                <input type="text" placeholder="Digite seu usuário">
+            </div>
+            <div class="input-group">
+                <label>Senha</label>
+                <input type="password" placeholder="Digite sua senha">
+            </div>
+            
+            <div class="btn-group-login">
+                <button type="button" id="close-modal">Cancelar</button>
+                <button type="submit">Confirmar</button>
+            </div>
+        </form>
     </div>
+</div>
+</div>
+
+
+
 <script>
     function toggleMenu() {
         const menu = document.getElementById("menuOpcoes");
@@ -92,6 +126,30 @@
         }
     }
 }
+    // Referências do Modal
+    const modalUser = document.getElementById('modal-usuario');
+    const btnOpenUser = document.getElementById('open-modal');
+    const btnCloseUser = document.getElementById('close-modal');
+
+    // Abre o modal
+    btnOpenUser.addEventListener('click', (e) => {
+        e.preventDefault();
+        modalUser.style.display = 'flex';
+    });
+
+    // Fecha o modal no botão cancelar
+    btnCloseUser.addEventListener('click', () => {
+        modalUser.style.display = 'none';
+    });
+
+    // Fecha se clicar no fundo escuro
+    window.addEventListener('click', (e) => {
+        if (e.target === modalUser) {
+            modalUser.style.display = 'none';
+        }
+    });
+
+
 </script>
 
     <script>
