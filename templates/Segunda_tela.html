@@ -94,7 +94,7 @@
         const input = document.getElementById('inputNumero');
         const aviso = document.getElementById('mensagemAviso');
         const valor = parseInt(input.value);
-        const estoqueDisponivel = {{ ferramenta[2] }};
+        const estoqueDisponivel = Number("{{ ferramenta[2] }}");
 
         if (isNaN(valor) || valor <= 0) {
             aviso.innerText = "Por favor, digite uma quantidade válida (maior que zero).";

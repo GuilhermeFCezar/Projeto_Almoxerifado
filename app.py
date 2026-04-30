@@ -1,9 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
+import os
+from werkzeug.utils import secure_filename
 import qrcode
 import sqlite3
 import os
 
 app = Flask(__name__)
+
+# Define o caminho da pasta de imagens
+UPLOAD_FOLDER = 'static/Imagens'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Cria a pasta caso ela não exista
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 # Garante que a pasta de imagens existe
 if not os.path.exists('static/qrcodes'):
@@ -156,33 +166,43 @@ def excluir_ferramenta():
 
 @app.route("/adicionar_ferramenta", methods=['POST'])
 def adicionar_ferramenta():
-    dados = request.get_json()
+    # Pega os textos do formulário
+    id_ferramenta = request.form.get('id')
+    nome = request.form.get('nome')
+    quantidade = request.form.get('quantidade')
     
-    id_ferramenta = dados.get('id')
-    nome = dados.get('nome')
-    quantidade = dados.get('quantidade')
-    imagem = dados.get('imagem')
+    # Pega o arquivo enviado
+    arquivo = request.files.get('imagem')
 
+    if not arquivo or int(quantidade) < 0:
+        return jsonify({"status": "Dados inválidos ou imagem ausente!"})
+
+    # Limpa o nome do arquivo para evitar erros de segurança (ex: furadeira de impacto.png -> furadeira_de_impacto.png)
+    nome_arquivo = secure_filename(arquivo.filename)
+    
     conn = sqlite3.connect('almoxerifado.db')
     cursor = conn.cursor()
 
     try:
-        # Insere a nova linha no banco de dados
+        # 1. Salva a imagem na pasta static/Imagens/
+        caminho_completo = os.path.join(app.config['UPLOAD_FOLDER'], nome_arquivo)
+        arquivo.save(caminho_completo)
+
+        # 2. Salva os dados no banco (usamos o nome_arquivo limpo)
         cursor.execute('''
             INSERT INTO ferramentas (id, nome, quantidade_em_estoque, imagem)
             VALUES (?, ?, ?, ?)
-        ''', (id_ferramenta, nome, quantidade, imagem))
+        ''', (id_ferramenta, nome, quantidade, nome_arquivo))
         
-        # Gera o QR Code com o ID e salva na sua pasta static
+        # 3. Gera o QR Code
         img_qr = qrcode.make(id_ferramenta)
+        if not os.path.exists("static/qrcodes"):
+            os.makedirs("static/qrcodes")
         img_qr.save(f"static/qrcodes/qr_{id_ferramenta}.png")
         
         conn.commit()
         mensagem = "Sucesso"
         
-    except sqlite3.IntegrityError:
-        # Se tentar cadastrar um ID que já existe (ex: FER-001 de novo)
-        mensagem = "Esse ID já está cadastrado no sistema!"
     except Exception as e:
         mensagem = str(e)
     finally:
