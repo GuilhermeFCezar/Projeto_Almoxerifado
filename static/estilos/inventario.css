@@ -217,3 +217,13 @@ body {
 .input-group input:focus { border-color: #004a99; }
 
 .btn-full { width: 100%; padding: 12px; font-size: 16px; margin-top: 10px; }
+
+
+.voltar {
+    display:flex;
+    position:absolute;
+    margin-left: 50%;
+    margin-right: 0%;
+    width: 3%; 
+    margin-top: -50%; /* Ajuste o valor conforme necessário */
+}
