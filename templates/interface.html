@@ -255,6 +255,42 @@ if (botaoCadastrar) {
     })
     .catch(erro => console.error("Erro de comunicação:", erro));
 }
+// Ativando o botão de ENTRAR (Login)
+const botaoEntrar = document.getElementById('btn-entrar');
+
+if (botaoEntrar) {
+    // Muda o tipo para button para não recarregar a tela sozinho
+    botaoEntrar.type = 'button'; 
+    
+    botaoEntrar.addEventListener('click', async (e) => {
+        e.preventDefault();
+        
+        const usuario = document.getElementById('user-input').value;
+        const senha = document.getElementById('pass-input').value;
+
+        if (!usuario || !senha) {
+            alert("Por favor, preencha usuário e senha para entrar.");
+            return;
+        }
+
+        // Bate na rota de autenticação
+        const response = await fetch('/autenticar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ usuario: usuario, senha: senha })
+        });
+
+        const resultado = await response.json();
+
+        if (resultado.sucesso) {
+            alert("Bem-vindo(a), " + resultado.nome + "!");
+            // Recarrega a página. O Python vai ver a sessão e injetar o nome no {{ nome }}
+            window.location.reload(); 
+        } else {
+            alert("Erro: " + resultado.mensagem);
+        }
+    });
+}
 </script>
 
 </body>

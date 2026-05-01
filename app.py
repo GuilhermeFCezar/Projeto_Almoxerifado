@@ -24,60 +24,109 @@ if not os.path.exists('static/qrcodes'):
     os.makedirs('static/qrcodes')
 
 def iniciar_banco():
-    # Conecta no banco correto (com "e")
     conn = sqlite3.connect('almoxerifado.db')
     cursor = conn.cursor()
     
-    # Mantém a estrutura padronizada que criamos anteriormente
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS ferramentas (
-            id TEXT PRIMARY KEY,
-            nome TEXT NOT NULL,
-            quantidade_em_estoque INTEGER NOT NULL
-        )
-    ''')
+    # ... (suas tabelas ferramentas e movimentacoes continuam iguais aqui) ...
     
+    # ADICIONE A TABELA DE USUÁRIOS AQUI:
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS movimentacoes (
+        CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            ferramenta_id TEXT NOT NULL,
-            quem_pegou TEXT NOT NULL,
-            quem_autorizou TEXT NOT NULL,
-            quantidade_retirada INTEGER NOT NULL,
-            data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (ferramenta_id) REFERENCES ferramentas (id)
+            nome TEXT NOT NULL UNIQUE,
+            senha TEXT NOT NULL
         )
     ''')
+    cursor.execute("INSERT OR IGNORE INTO usuarios (nome, senha) VALUES (?, ?)", ("Felipe", "1234"))
+    
     conn.commit()
     conn.close()
 
+
 @app.route("/")
 def home():
-    # Busca as ferramentas no banco para mostrar no HTML
     conn = sqlite3.connect('almoxerifado.db')
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM ferramentas")
     lista_produtos = cursor.fetchall()
     conn.close()
-    return render_template("interface.html", produtos=lista_produtos)
+    
+    # Pega o nome do usuário logado (se não tiver, vira 'Visitante')
+    nome_atual = session.get('usuario_nome', 'Visitante')
+    
+    # Passa as DUAS coisas para o HTML: produtos e nome
+    return render_template("interface.html", produtos=lista_produtos, nome=nome_atual)
+
+#sistemas de usuarios
+
+@app.route('/cadastrar_usuario', methods=['POST'])
+def cadastrar():
+    dados = request.json
+    novo_usuario = dados.get('usuario')
+    nova_senha = dados.get('senha')
+
+    if not novo_usuario or not nova_senha:
+        return jsonify({"sucesso": False, "mensagem": "Preencha todos os campos!"}), 400
+
+    conn = sqlite3.connect('almoxerifado.db')
+    cursor = conn.cursor()
+    
+    try:
+        cursor.execute("INSERT INTO usuarios (nome, senha) VALUES (?, ?)", (novo_usuario, nova_senha))
+        conn.commit()
+        return jsonify({"sucesso": True, "mensagem": "Usuário cadastrado com sucesso!"}), 201
+    except sqlite3.IntegrityError:
+        return jsonify({"sucesso": False, "mensagem": "Este usuário já existe!"}), 400
+    finally:
+        # A MÁGICA ESTÁ AQUI! O 'finally' roda não importa o que aconteça lá em cima.
+        # Assim o banco NUNCA vai ficar trancado (locked).
+        conn.close()
+
+@app.route('/autenticar', methods=['POST'])
+def autenticar():
+    dados = request.json
+    usuario_form = dados.get('usuario')
+    senha_form = dados.get('senha')
+
+    conn = sqlite3.connect('almoxerifado.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT nome, senha FROM usuarios WHERE nome = ?", (usuario_form,))
+    resultado = cursor.fetchone()
+    conn.close()
+
+    if resultado and resultado[1] == senha_form:
+        session['usuario_nome'] = resultado[0] 
+        return jsonify({"sucesso": True, "nome": resultado[0]}), 200
+    else:
+        return jsonify({"sucesso": False, "mensagem": "Usuário ou senha incorretos"}), 401
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
 
 
 @app.route("/inventario")
 def inventario():
+    # Proteção de acesso: se não estiver logado, manda pro inicio
+    if 'usuario_nome' not in session:
+        return redirect(url_for('home'))
+
+    nome_do_logado = session['usuario_nome']
+
     conn = sqlite3.connect('almoxerifado.db')
     cursor = conn.cursor()
     
-    # Busca a lista para a tabela
     cursor.execute("SELECT * FROM ferramentas")
     lista_ferramentas = cursor.fetchall()
     
-    # Faz uma consulta separada só para contar o total real de linhas
     cursor.execute("SELECT COUNT(*) FROM ferramentas")
-    total_real = cursor.fetchone()[0] # Pega o primeiro valor do resultado
+    total_real = cursor.fetchone()[0] 
     
     conn.close()
     
-    return render_template("inventario.html", ferramentas=lista_ferramentas, total=total_real)
+    # Adicionamos a variável nome aqui no final
+    return render_template("inventario.html", ferramentas=lista_ferramentas, total=total_real, nome=nome_do_logado)
 
 #Rota da busca do inventario
 @app.route("/buscar_ferramentas")
