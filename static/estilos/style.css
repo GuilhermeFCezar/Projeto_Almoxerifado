@@ -7,12 +7,9 @@
 }
 
 
-
-
-
 /*Aqui Inicia a estilização da area de login*/
 /* Posicionamento do container principal */
-/* --- 1. Conserta a Área do Usuário no Topo --- */
+
 .user-login {
     position: absolute;
     top: -190px;
@@ -21,27 +18,27 @@
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    z-index: 1000; /* Garante que fique acima do cartão */
+    z-index: 1000;
 }
 
-/* --- 2. Força a Foto a Aparecer Pequena --- */
+
 .user-icon {
-    width: 40px !important;  /* Tamanho fixo e pequeno */
+    width: 40px !important;  
     height: 40px !important;
     border-radius: 4px;
     overflow: hidden; /* Garante que a foto não saia do quadrado */
     background-color: #333; /* Fundo escuro para destacar o avatar cinza */
-    border: 2px solid #005bb7; /* Borda azul igual à sua referência */
+    border: 2px solid #005bb7;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Garante que a imagem dentro do ícone se comporte bem */
+
 .user-icon img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Faz a foto preencher o quadrado sem distorcer */
+    object-fit: cover; 
 }
 
 /* --- 3. Conserta o Menu Suspenso Gigante --- */
@@ -567,6 +564,8 @@ body {
     cursor: pointer;
     border: 1px solid #999;
 }
+
+
 
 /* Animação simples de entrada */
 @keyframes slideUp {
