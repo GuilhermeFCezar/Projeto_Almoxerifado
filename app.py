@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import os
 from werkzeug.utils import secure_filename
 import qrcode
@@ -6,6 +7,9 @@ import sqlite3
 import os
 
 app = Flask(__name__)
+
+
+app.secret_key = 'elsoyelllobo'
 
 # Define o caminho da pasta de imagens
 UPLOAD_FOLDER = 'static/Imagens'
@@ -229,3 +233,9 @@ def segunda_tela(id_ferramenta):
 if __name__ == "__main__":
     iniciar_banco()
     app.run(debug=True)
+
+
+
+
+#login
+

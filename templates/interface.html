@@ -14,7 +14,7 @@
                 <img src="../static/Imagens/user-avatar.png" alt="Usuario">
             </div>
             <div class="user-info">
-                <span class=s"user-name">Felipe Silva</span>
+                <span class="user-name">{{ nome }}</span>
                 <span class="seta">▼</span>
             </div>
 
@@ -100,7 +100,8 @@
         <div class="btn-group-login" style="display: flex; gap: 10px; margin-top: 20px;">
             <button type="button" id="close-modal">Cancelar</button>
             <button type="submit" id="btn-entrar">Entrar</button>
-            <button type="button" id="btn-cadastrar" style="background-color: #28a745; color: white;">Cadastrar Novo</button>
+            <button type="button" id="btn-cadastrar" onclick="salvarNovoUsuario(event)" style="background-color: #28a745; color: white;">Cadastrar Novo</button>
+            
         </div>
     </form>
 </div>
@@ -206,6 +207,54 @@ if (botaoCadastrar) {
             buscarManualmente();
         }
     });
+
+
+    function salvarNovoUsuario(event) {
+    event.preventDefault(); // Impede a página de dar aquele "piscar" e recarregar
+
+    // 1. Pega os valores diretamente dos inputs do seu HTML
+    let usuarioDigitado = document.getElementById('user-input').value;
+    let senhaDigitada = document.getElementById('pass-input').value;
+
+    // Trava de segurança simples no Front-end
+    if (!usuarioDigitado || !senhaDigitada) {
+        alert("Erro: Preencha o usuário e a senha para cadastrar!");
+        return; 
+    }
+
+    // 2. Monta o pacote no formato JSON (é isso que o Python espera)
+    let dados = {
+        usuario: usuarioDigitado,
+        senha: senhaDigitada
+    };
+    
+    // 3. Envia para a rota do Flask
+    fetch('/cadastrar_usuario', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json' // Avisa o Python que estamos mandando JSON
+        },
+        body: JSON.stringify(dados)
+    })
+    .then(response => response.json())
+    .then(resultado => {
+        // 4. Lê a resposta do Python (resultado.sucesso)
+        if (resultado.sucesso === true) {
+            alert(resultado.mensagem); // Vai exibir "Usuário cadastrado com sucesso!"
+            
+            // Limpa os campos após o sucesso
+            document.getElementById('user-input').value = "";
+            document.getElementById('pass-input').value = "";
+            
+            // Se você tiver a função fecharModal() pronta, pode descomentar a linha abaixo:
+            // fecharModal();
+        } else {
+            // Vai exibir "Este usuário já existe!" ou "Preencha todos os campos!"
+            alert("Atenção: " + resultado.mensagem); 
+        }
+    })
+    .catch(erro => console.error("Erro de comunicação:", erro));
+}
 </script>
 
 </body>

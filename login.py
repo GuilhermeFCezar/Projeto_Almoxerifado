@@ -32,7 +32,7 @@ inicializar_banco()
 def index():
     return render_template('interface.html')
 
-@app.route('/cadastrar', methods=['POST'])
+@app.route('/cadastrar_usuario', methods=['POST'])
 def cadastrar():
     dados = request.json
     novo_usuario = dados.get('usuario')
@@ -67,6 +67,25 @@ def autenticar():
         return jsonify({"sucesso": True, "nome": resultado[0]}), 200
     else:
         return jsonify({"sucesso": False, "mensagem": "Usuário ou senha incorretos"}), 401
+    
+
+@app.route("/inventario")
+def inventario():
+    conn = sqlite3.connect('almoxerifado.db')
+    cursor = conn.cursor()
+    
+    # Busca a lista para a tabela
+    cursor.execute("SELECT * FROM ferramentas")
+    lista_ferramentas = cursor.fetchall()
+    
+    # Faz uma consulta separada só para contar o total real de linhas
+    cursor.execute("SELECT COUNT(*) FROM ferramentas")
+    total_real = cursor.fetchone()[0] # Pega o primeiro valor do resultado
+    
+    conn.close()
+    
+    return render_template("inventario.html", ferramentas=lista_ferramentas, total=total_real)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
